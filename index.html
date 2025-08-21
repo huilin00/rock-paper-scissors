@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors</title>
+    <script>
+        console.log("Hello world");
+        // get computer response
+        let getComputerChoice = () => {
+            let randomInt = Math.floor(Math.random() * 3); // randomly returns a number from 0 to 2
+            switch (randomInt) {
+                case 0: return "rock";
+                case 1: return "paper";
+                case 2: return "scissors";
+                default: break;
+            }
+        };
+
+        // get human response
+        let getHumanChoice = () => {
+            return prompt("Please enter rock, paper or scissors!")
+        }
+
+        let playRound = (humanChoice, computerChoice) => {
+            humanChoice = humanChoice.toLowerCase();
+            // draw
+            if (humanChoice === computerChoice) { console.log("We have a draw!"); return }
+            if (humanChoice === "rock" && computerChoice === "scissors" ||
+                humanChoice === "paper" && computerChoice === "rock" ||
+                humanChoice === "scissors" && computerChoice === "paper"
+            ) {
+                humanScore += 1;
+                console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+            }
+            else {
+                computerScore += 1;
+                console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+            }
+        }
+        let humanScore = 0;
+        let computerScore = 0;
+        let playGame = () => {
+            let counter = 0;
+            while (counter < 5) {
+                playRound(getHumanChoice(), getComputerChoice());
+                counter++;
+            }
+            return "Game over!";
+
+        }
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
