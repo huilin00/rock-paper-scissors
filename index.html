@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock-Paper-Scissors</title>
-    <script>
-        console.log("Hello world");
+</head>
+<body>
+    <div class="container" style="margin-bottom: 20px;">Let's play rock-paper-scissors! Select your choice!</div>
+    <div class="optionsContainer" style="margin-bottom: 20px;"></div>
+</body>
+<script>
         // get computer response
         let getComputerChoice = () => {
             let randomInt = Math.floor(Math.random() * 3); // randomly returns a number from 0 to 2
@@ -25,37 +29,91 @@
         let playRound = (humanChoice, computerChoice) => {
             humanChoice = humanChoice.toLowerCase();
             // draw
-            if (humanChoice === computerChoice) { console.log("We have a draw!"); return }
+            if (humanChoice === computerChoice) { 
+                // console.log("We have a draw!"); 
+                return 0 }
             if (humanChoice === "rock" && computerChoice === "scissors" ||
                 humanChoice === "paper" && computerChoice === "rock" ||
                 humanChoice === "scissors" && computerChoice === "paper"
             ) {
                 humanScore += 1;
-                console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+                return 1;
+                // console.log(`You win! ${humanChoice} beats ${computerChoice}`);
             }
             else {
                 computerScore += 1;
-                console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+                return 2;
+                // console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
             }
         }
+
         let humanScore = 0;
         let computerScore = 0;
-        let playGame = () => {
-            let counter = 0;
-            while (counter < 5) {
-                playRound(getHumanChoice(), getComputerChoice());
-                counter++;
-            }
-            return "Game over!";
+        let counter = 0;
+        let rock = "rock";
+        let paper = "paper";
+        let scissors = "scissors";
 
-        }
+        const container = document.querySelector(".optionsContainer");
+        const rockButton = document.createElement("button");
+        rockButton.textContent = rock;
+        const paperButton = document.createElement("button");
+        paperButton.textContent = paper;
+        const scissorsButton = document.createElement("button");
+        scissorsButton.textContent = scissors;
+        container.append(rockButton, paperButton, scissorsButton);
+        // add button styling
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => button.style.margin = "5px");
 
-        playGame();
-
-
-    </script>
-</head>
-<body>
     
-</body>
+        buttons.forEach((button) => {
+            button.addEventListener("click", function() {
+                // play the game and keep track of the choices and scores 
+                let humanChoice = "";
+                let computerChoice = getComputerChoice();
+                let currentWinner;
+                switch (button.textContent) {
+                    case rock: 
+                        humanChoice = rock;
+                        currentWinner = playRound(rock, computerChoice);
+                        break;
+                    case paper:
+                        humanChoice = paper;
+                        currentWinner = playRound(paper, computerChoice);
+                        break;
+                    case scissors:
+                        humanChoice = scissors;
+                        currentWinner = playRound(scissors, computerChoice);
+                }
+                const log = document.createElement("div");
+                log.style.whiteSpace = "pre-line";
+                log.style.paddingBottom = "5px";
+                let winnerMsg = (humanScore, computerScore) => {
+                    if (humanScore == computerScore) {
+                        return "It's a tie!"
+                    }
+                    else if (humanScore > computerScore) {
+                        return "You win!"
+                    }
+                    else { return "Computer wins!"}
+                }
+            
+
+                if (counter == 4) {
+                    log.textContent = `Round ${counter+1}:
+                    You picked ${humanChoice}, Computer picked ${computerChoice}.
+                    Your score: ${humanScore}; Computer score: ${computerScore}
+                    Game Over! ${winnerMsg(humanScore, computerScore)}`;
+                }
+                else {
+                    log.textContent = `Round ${counter+1}:
+                    You picked ${humanChoice}, Computer picked ${computerChoice}. 
+                    Your score: ${humanScore}; Computer score: ${computerScore}`;
+                }
+                container.appendChild(log);
+                counter+=1;
+            });
+        });
+    </script>
 </html>
